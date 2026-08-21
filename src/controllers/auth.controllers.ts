@@ -1,5 +1,3 @@
-import { getAuth } from "firebase-admin/auth";
-import { app } from "../database/firebaseConfig.js";
 
 
 
@@ -8,7 +6,6 @@ export const SignUp = async (req: any, res: any) => {
         const data = req.body;
         /* Process/Validate data then create or reject user */
         
-        const auth = getAuth(app);
         
         res.json(data);
     } catch (error) {
