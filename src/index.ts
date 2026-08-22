@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import authRouter from "./src/routes/auth.routes.js";
-import { connectDB } from "./src/database/db.js";
-import { User } from "./src/models/User.model.js";
-import { AuthMiddleware } from "./src/middlewares/auth.middlewares.js";
+import authRouter from "./routes/auth.routes.js";
+import { connectDB } from "./database/db.js";
+import { User } from "./models/User.model.js";
+import { AuthMiddleware } from "./middlewares/auth.middlewares.js";
 
 dotenv.config();
 const app = express();
