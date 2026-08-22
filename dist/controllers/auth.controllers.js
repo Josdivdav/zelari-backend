@@ -6,8 +6,12 @@ export const SignUp = async (req, res, next) => {
     try {
         const data = req.body;
         /* Process/Validate data then create or reject user */
+        const JWT_SECRET = process.env.JWT_SECRET;
+        if (!JWT_SECRET) {
+            return res.status(500).json({ error: "JWT_SECRET not defined" });
+        }
         const user = await User.create(data);
-        jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
+        jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
             if (err) {
                 return res.status(500).json({ error: "Error signing token" });
             }
