@@ -40,5 +40,12 @@ export const SignUp = async (req: any, res: any, next: any) => {
 }
 
 export const SignIn = async (req: any, res: any) => {
-    res.json({ result: "Signed In"});
+    try {
+        const data = req.body;
+        console.log(data);
+        
+    } catch (err : any) {
+        console.log(err);
+        
+    }
 }  

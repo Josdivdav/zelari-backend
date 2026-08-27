@@ -19,6 +19,6 @@ app.use("/api/v1/auth", authRouter);
 const PORT = process.env.PORT || 3000;
 
 app.listen(3000, async () => {
-  await connectDB();
+  //await connectDB();
   console.log(`Server running on port ${PORT}`);
 });
