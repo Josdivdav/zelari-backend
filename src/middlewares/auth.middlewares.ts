@@ -1,5 +1,43 @@
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { User } from "../models/User.model.js";
+
+dotenv.config({ path: "./.env" });
 
 export const AuthMiddleware = async (req: any, res: any, next: any) => {
+    try {
+        const JWT_SECRET = process.env.JWT_SECRET;
+        if (!JWT_SECRET) {
+            return res.status(500).json({ error: "JWT_SECRET not defined" });
+        }
+
+        const authHeader = req.headers.authorization;
+        const token = authHeader?.startsWith("Bearer ")
+            ? authHeader.split(" ")[1]
+            : authHeader;
+
+        if (!token) {
+            return res.status(401).json({ success: false, error: "Authentication token is required" });
+        }
+
+        const decoded = jwt.verify(token, JWT_SECRET) as { id?: string };
+        if (!decoded.id) {
+            return res.status(401).json({ success: false, error: "Invalid authentication token" });
+        }
+
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(401).json({ success: false, error: "User not found" });
+        }
+
+        req.user = user;
+        next();
+    } catch (error) {
+        return res.status(401).json({ success: false, error: "Invalid or expired authentication token" });
+    }
+}
+
+export const ValidateAuthBody = async (req: any, res: any, next: any) => {
     try {
         const data = req.body;
         

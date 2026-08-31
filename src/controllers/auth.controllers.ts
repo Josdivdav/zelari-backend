@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
 
-async function emailExists(email: string): Promise<boolean> {
+async function emailExists(email: string): Promise<any> {
     const user = await User.findOne({ email: email.toLowerCase().trim() });
-    return !!user;
+    return user;
 }
 
 export const SignUp = async (req: any, res: any, next: any) => {
@@ -41,11 +41,25 @@ export const SignUp = async (req: any, res: any, next: any) => {
 
 export const SignIn = async (req: any, res: any) => {
     try {
-        const data = req.body;
-        console.log(data);
+        const { email, password } = req.body;
+        const JWT_SECRET = process.env.JWT_SECRET;
+        if(!JWT_SECRET) {
+            return res.status(500).json({ error: "JWT_SECRET not defined" });
+        }
+        const user = await emailExists(email);
+        if(!user) return res.status(404).json({ success: false, message: "User not found" });
+
+        
+
+        jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
+            if (err) {
+                return res.status(500).json({ error: "Error signing token" });
+            }
+            res.status(200).json({ success: true, user, token });
+        });
         
     } catch (err : any) {
         console.log(err);
         
     }
-}  
+}

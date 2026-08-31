@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.routes.js";
 import { connectDB } from "./database/db.js";
 import { User } from "./models/User.model.js";
 import { AuthMiddleware } from "./middlewares/auth.middlewares.js";
+import usersRouter from "./routes/users.routes.js";
 
 dotenv.config();
 const app = express();
@@ -13,12 +14,14 @@ app.use(express.json());
 
 app.use("/api/v1/auth", authRouter);
 
+app.use("/api/v1/users", AuthMiddleware, usersRouter);
+
 
 
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(3000, async () => {
-  //await connectDB();
+  await connectDB();
   console.log(`Server running on port ${PORT}`);
 });

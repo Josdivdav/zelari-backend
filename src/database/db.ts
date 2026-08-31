@@ -5,10 +5,15 @@ dotenv.config({ path: "./.env" });
 
 
 export async function connectDB() {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) {
-    throw new Error("MONGODB_URI is not defined in the environment variables.");
+  console.log("Connecting to mongoDB...");
+  try {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error("MONGODB_URI is not defined in the environment variables.");
+    }
+    await mongoose.connect(uri);
+    console.log("MongoDB connected");
+  } catch(err : any) {
+    console.log("Connection failed!");
   }
-  await mongoose.connect(uri);
-  console.log("MongoDB connected");
 }
