@@ -6,7 +6,7 @@ interface AuthenticatedRequest extends Request {
 
 const usersRouter = Router();
 
-usersRouter.get("/", (req: AuthenticatedRequest, res: Response) => {
+usersRouter.get("/get-data", (req: AuthenticatedRequest, res: Response) => {
   const user = req.user;
   if (!user) {
     return res.status(404).json({ success: false, error: "User not found" });
