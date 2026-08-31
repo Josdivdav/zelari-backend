@@ -28,14 +28,17 @@ export const SignUp = async (req, res, next) => {
     catch (error) {
         if (error.code == 11000) {
             console.log("User exists");
-            res.status(500).json({ success: false, error: "User exists" });
+            return res.status(409).json({ success: false, error: "User exists" });
         }
-        res.status(500).json({ success: false, error: error });
+        return res.status(500).json({ success: false, error: error.message || "Signup failed" });
     }
 };
 export const SignIn = async (req, res) => {
     try {
         const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ success: false, error: "Email and password are required" });
+        }
         const JWT_SECRET = process.env.JWT_SECRET;
         if (!JWT_SECRET) {
             return res.status(500).json({ error: "JWT_SECRET not defined" });
@@ -43,6 +46,10 @@ export const SignIn = async (req, res) => {
         const user = await emailExists(email);
         if (!user)
             return res.status(404).json({ success: false, message: "User not found" });
+        const passwordMatches = await user.comparePassword(password);
+        if (!passwordMatches) {
+            return res.status(401).json({ success: false, error: "Invalid email or password" });
+        }
         jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
             if (err) {
                 return res.status(500).json({ error: "Error signing token" });
@@ -52,6 +59,7 @@ export const SignIn = async (req, res) => {
     }
     catch (err) {
         console.log(err);
+        return res.status(500).json({ success: false, error: err.message || "Signin failed" });
     }
 };
 //# sourceMappingURL=auth.controllers.js.map

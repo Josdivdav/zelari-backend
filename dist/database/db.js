@@ -12,7 +12,8 @@ export async function connectDB() {
         console.log("MongoDB connected");
     }
     catch (err) {
-        console.log("Connection failed!");
+        console.error("MongoDB connection failed:", err.message);
+        throw err;
     }
 }
 //# sourceMappingURL=db.js.map
