@@ -3,6 +3,6 @@ import { getUserData } from "../controllers/user.controllers.js";
 
 const usersRouter = Router();
 
-usersRouter.get("/get-data", getUserData);
+usersRouter.post("/get-data", getUserData);
 
 export default usersRouter;
