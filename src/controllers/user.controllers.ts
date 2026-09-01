@@ -11,5 +11,7 @@ export const getUserData = async (req: AuthenticatedRequest, res: Response) => {
     return res.status(404).json({ success: false, error: "User not found" });
   }
 
+  
+
   return res.status(200).json({ success: true, user });
 };
