@@ -1,4 +1,5 @@
 import { User } from "../models/User.model.js";
+import Account from "../models/Account.model.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -21,8 +22,15 @@ export const SignUp = async (req: any, res: any, next: any) => {
         if(await emailExists(data.email)) {
             return res.status(400).json({ error: "Email already exists" });
         }
-
+        
         const user = await User.create(data);
+        
+        const account = await Account.findOneAndUpdate(
+            { author: user._id } as Record<string, unknown>,
+            { $setOnInsert: { author: user?._id } },
+            { new: true, upsert: true },
+        );
+
         
         jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
             if (err) {

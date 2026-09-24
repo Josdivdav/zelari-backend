@@ -6,3 +6,4 @@ const usersRouter = Router();
 usersRouter.get("/", getUserData);
 
 export default usersRouter;
+[]
