@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.routes.js";
 import { connectDB } from "./database/db.js";
 import { AuthMiddleware } from "./middlewares/auth.middlewares.js";
 import usersRouter from "./routes/users.routes.js";
+import { PaymentMiddleware } from "./middlewares/account.middlewares.js";
 
 dotenv.config();
 const app = express();
@@ -17,15 +18,11 @@ app.get("/", (_req, res) => {
 
 app.use("/api/v1/auth", authRouter);
 
-app.use("/api/v1/users", AuthMiddleware, usersRouter);
+app.use("/api/v1/users", AuthMiddleware, PaymentMiddleware, usersRouter);
 
+const PORT = process.env.PORT || 5000;
 
-
-
-const PORT = process.env.PORT || 3000;
-
-connectDB()
-  .then(() => {
+connectDB().then(() => {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });

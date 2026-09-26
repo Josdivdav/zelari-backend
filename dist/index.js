@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.routes.js";
 import { connectDB } from "./database/db.js";
 import { AuthMiddleware } from "./middlewares/auth.middlewares.js";
 import usersRouter from "./routes/users.routes.js";
+import { PaymentMiddleware } from "./middlewares/account.middlewares.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -13,10 +14,9 @@ app.get("/", (_req, res) => {
     res.status(200).json({ success: true, message: "Zelari API is running" });
 });
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users", AuthMiddleware, usersRouter);
-const PORT = process.env.PORT || 3000;
-connectDB()
-    .then(() => {
+app.use("/api/v1/users", AuthMiddleware, PaymentMiddleware, usersRouter);
+const PORT = process.env.PORT || 5000;
+connectDB().then(() => {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });

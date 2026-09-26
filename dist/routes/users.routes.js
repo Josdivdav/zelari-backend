@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { getUserData } from "../controllers/user.controllers.js";
+import { getUserData, handleDeposite } from "../controllers/user.controllers.js";
 const usersRouter = Router();
-usersRouter.get("/get-data", getUserData);
+usersRouter.get("/", getUserData);
+usersRouter.post("/deposit", handleDeposite);
 export default usersRouter;
 //# sourceMappingURL=users.routes.js.map

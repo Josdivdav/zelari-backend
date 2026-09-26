@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { getUserData } from "../controllers/user.controllers.js";
+import {
+    getUserData,
+    handleDeposite,
+    handleTransfer,
+} from "../controllers/user.controllers.js";
 
 const usersRouter = Router();
 
 usersRouter.get("/", getUserData);
 
+usersRouter.post("/deposit", handleDeposite);
+usersRouter.post("/transfer", handleTransfer);
+
 export default usersRouter;
-[]

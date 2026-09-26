@@ -24,7 +24,7 @@ export const SignUp = async (req: any, res: any, next: any) => {
         }
         
         const user = await User.create(data);
-        
+
         const account = await Account.findOneAndUpdate(
             { author: user._id } as Record<string, unknown>,
             { $setOnInsert: { author: user?._id } },
