@@ -45,7 +45,7 @@ export const handleDeposite = async (
       $push: {
         transactionHistories: {
           author: user._id,
-          type: "money_transfer",
+          type: "money_deposite",
           amount,
           status: "successful",
           reference: `deposit_${Date.now()}`,
